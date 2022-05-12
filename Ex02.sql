@@ -2,6 +2,8 @@
 select 문
     select 절
     froma 절
+    where 절
+    order by 절
 *************************/
 
 --(한줄주석)모든 컬럼 조회하기
@@ -47,7 +49,8 @@ from employees;
 
 select * from employees;
 
---사원의 사원번호 이름(first_name) 성(last_name) 급여 전화번호 이메일 입사일로 표시되도록 출력하세요
+--사원의 사원번호 이름(first_name) 성(last_name) 급여 전화번호 이메일 
+--입사일로 표시되도록 출력하세요
 select first_name as 이름, -- as="" 같은 역할(생략도 가능)
        last_name 성,
        salary "Salary",
@@ -87,7 +90,8 @@ from employees;
 */
 
 --예제2)전체직원의 정보를 다음과 같이 출력하세요
---성명(first_name last_name) 성과 이름사이에 _로 구분 급여 연봉(급여*12) 연봉2(급여*12+5000) 전화번호
+--성명(first_name last_name) 성과 이름사이에 _로 구분 급여 연봉(급여*12) 
+--연봉2(급여*12+5000) 전화번호
 select first_name || ' _ ' || last_name 성명,
        salary 급여,
        salary*12 연봉,
@@ -270,3 +274,51 @@ select first_name
 from employees
 where manager_id is null 
     and commission_pct is null;
+
+-------------------------------------------------------------------------------
+    
+select first_name,
+       salary
+from employees
+where salary >= 10000;
+
+--order by 절을 사용해 보기 좋게 정렬하기 (desc 내림차순 큰->작 asc 오름차순 작->큰)
+select first_name,
+       salary
+from employees
+order by salary desc;
+
+select first_name,
+       salary
+from employees
+order by salary asc;
+
+--급여가 9000이상인 사람만 
+select first_name,
+       salary
+from employees
+where salary >= 9000
+order by salary asc;
+ 
+--예제)
+--부서번호를 오름차순으로 정렬하고 부서번호, 급여, 이름을 출력하세요
+select department_id,
+       salary,
+       first_name
+from employees
+order by department_id asc;
+
+--급여가 10000이상인 직원의 이름 급여를 급여가 큰직원부터 출력하세요
+select first_name,
+       salary
+from employees
+where salary >= 10000
+order by salary desc;
+
+--부서번호를 오름차순으로 정렬하고 부서번호가 같으면 급여가 높은 사람부터 
+--부서번호 급여 이름을 출력하세요
+select department_id,
+       salary,
+       first_name
+from employees
+order by department_id asc, salary desc, first_name asc;
