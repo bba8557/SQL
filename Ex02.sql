@@ -185,19 +185,27 @@ where salary = 2100
 -------------------------------------------------------------------------------
 
 --Like 연산자로 비슷한것들 모두 찾기  % = 뭐가있든 상관없다 _ = 자리수를 나타낼수있다
-select first_name, last_name, salary
+select first_name, 
+       last_name, 
+       salary
 from employees
 where first_name like 'L%'; --뒤에는 상관없고 앞이 L인것
 
-select first_name, last_name, salary
+select first_name, 
+       last_name, 
+       salary
 from employees
 where first_name like '%s'; --앞은 상관없고 맨뒤에 s인것
 
-select first_name, last_name, salary
+select first_name, 
+       last_name, 
+       salary
 from employees
 where first_name like '%s%'; --s있는건 다
 
-select first_name, last_name, salary
+select first_name, 
+       last_name, 
+       salary
 from employees
 where first_name like 'L___'; --몇자
 
