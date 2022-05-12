@@ -322,3 +322,120 @@ select department_id,
        first_name
 from employees
 order by department_id asc, salary desc, first_name asc;
+
+-------------------------------------------------------------------------------
+/*
+단일행 함수
+*/
+--문자함수 - INITCAP (컬럼명) 첫글자 대문자
+--부서번호 100인 직원의 이메일주소와 부서번호를 출력하세요
+select email, 
+       initcap(email) "email2", 
+       department_id
+from employees
+where department_id = 100;
+
+--문자함수 - LOWER(컬럼명)소문자 / UPPER(컬럼명)대문자
+select first_name,
+       upper(first_name) upper,
+       lower(first_name) "lower"
+from employees
+where department_id = 100;
+
+--문자함수 - SUBSTR(컬럼명, 시작위치, 글자수)
+select first_name,
+       substr(first_name, 1, 4),
+       substr(first_name, -3, 2) --(-)뒤에서부터 세어옴
+from employees
+where department_id = 100;
+
+--문자함수 
+-- LPAD(컬럼명, 자리수, '채울문자')왼쪽공백 / RPAD(컬럼명, 자리수, '채울문자')오른쪽공백
+select first_name,
+       lpad(first_name, 10, '*'),
+       rpad(first_name, 10, '*')
+       --rpad(lpad(first_name, 10, '*'), 10, '*')
+from employees;
+
+--문자함수 - REPLACE(컬럼명, 문자1, 문자2) 문자 바꾸기
+select first_name,
+       replace(first_name, 'a', '*'),
+       substr(first_name, 2, 3),
+       replace(first_name, substr(first_name, 2, 3), '***')
+from employees
+where department_id = 100;
+
+-------------------------------------------------------------------------------
+
+--테스트용 dual 가상테이블
+select replace('abcdefg', 'bc', '*****')
+from dual;
+
+select substr('900214-1234234', 8, 1)
+from dual;
+
+-------------------------------------------------------------------------------
+
+/*
+숫자함수
+*/
+--숫자함수 - ROUND(숫자, 출력을 원하는 자리수) 마지막수 반올림해서 표기 -올라가서 반올림
+select round(123.355, 2) r2, 
+       round(123.456, 0) r0,
+       round(124.456, -1) "r-1"
+from dual;
+
+--숫자함수 -TRUNC(숫자, 출력을 원하는 자리수) 버리고 출력
+select trunc(123.565, 2) r2,
+       trunc(123.456, 0) r0,
+       trunc(123.456, -1) "r-1"
+from dual;
+
+-------------------------------------------------------------------------------
+
+/*
+날짜함수
+*/
+--날짜함수 -SYSDATE()
+select sysdate --오늘 날짜
+from dual;
+
+select months_between(sysdate, hire_date)
+from employees
+where department_id = 110;
+
+-------------------------------------------------------------------------------
+
+/*
+변환함수
+*/
+--변환함수 -TO_CHAR(숫자, '출력모양') 숫자형->문자형으로 변환하기 
+select first_name,
+       to_char(salary*12, '$099999')
+from employees
+where department_id = 110;
+
+--fmt(출력모양) 나타내는 방법 9를 기호로 사용
+select to_char(9876, '99999'),
+       to_char(9876, '099999'),
+       to_char(9876, '$99999'),
+       to_char(9876, '9999.99'),
+       to_char(987654321, '999,999,999')
+from dual;
+
+--변환함수 -TO_CHAR(날짜, '출력모양') 날짜->문자형으로 변환하기
+select sysdate,
+       to_char(sysdate, 'YYYY-MM-DD'),
+       to_char(sysdate, 'HH24:MI:SS'),
+       to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'),  
+       to_char(sysdate, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"'),
+       to_char(sysdate, 'YYYY'),  --년도
+       to_char(sysdate, 'YY'),    --년
+       to_char(sysdate, 'MM'),    --월
+       to_char(sysdate, 'MONTH'), --n월
+       to_char(sysdate, 'DD'),    --일
+       to_char(sysdate, 'DAY'),   --요일
+       to_char(sysdate, 'HH24'),  --시
+       to_char(sysdate, 'MI'),    --분
+       to_char(sysdate, 'SS')     --초
+from dual;
