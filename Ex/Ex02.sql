@@ -1,5 +1,5 @@
 /******(여러줄 주석)******
-select 문
+select 문 
     select 절
     froma 절
     where 절
