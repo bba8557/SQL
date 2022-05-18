@@ -31,3 +31,55 @@ from (select employee_id, --하나로 묶어줘서 정렬
        order by salary desc) ot
 where rownum >= 1
 and rownum <= 5;
+
+--꼭 1번이 아니라도 출력 가능하게 
+select ort.rn,
+       ort.employee_id,
+       ort.first_name,
+       ort.salary
+from (select rownum rn,
+             ot.employee_id,
+             ot.first_name,
+             ot.salary
+      from (select employee_id,
+                   first_name,
+                   salary
+            from employees
+            order by salary desc) ot 
+      ) ort
+where rn >= 1
+and rn <= 5;
+
+--예제) 07년에 입사한 직원중 급여가 많은 직원중 3에서 7등의 이름 급여 입사일은?
+--07년 입사한 직원들 급여 많은순
+select first_name,
+       salary,
+       hire_date
+from employees
+where hire_date >= '07/01/01'
+and hire_date <= '07/12/31'
+order by salary desc;
+
+--3~7등
+select hsr.rn,
+       hsr.employee_id,
+       hsr.first_name,
+       hsr.salary,
+       hsr.hire_date
+from (select rownum rn,
+             hs.employee_id,
+             hs.first_name,
+             hs.salary,
+             hs.hire_date
+      from (select employee_id,
+                   first_name,
+                   salary,
+                   hire_date
+            from employees
+            where hire_date >= '07/01/01'
+            and hire_date <= '07/12/31'
+            order by salary desc) hs 
+      ) hsr
+where hsr.rn >= 3
+and hsr.rn <= 7;
+
