@@ -1,68 +1,121 @@
-/***********************
-        SubQuery 
-************************/
+/**********************
+* Join 
+***********************/
+--equi join
+select *
+from employees, departments;
 
---subquery(단일행) 
+select  employee_id ,
+        first_name,
+        salary,
+        department_name,
+        em.department_id "e_did",
+        de.department_id "d_did"
+from employees em, departments de
+where em.department_id = de.department_id;
 
---'Den' 보다 급여를 많은 사람의 이름과 급여는?
-select first_name,
-       salary
-from employees
-where first_name = 'Den'; --11000
+--모든 직원이름, 부서이름, 업무명 을 출력하세요
+select  e.first_name,
+        d.department_name,
+        j.job_title,
+        e.salary,
+        e.department_id,
+        d.department_id,
+        e.job_id,
+        j.job_id
+from employees e, departments d, jobs j
+where e.department_id = d.department_id
+and e.job_id = j.job_id
+and e.salary >= 7000
+order by salary desc
+;
 
-select first_name,
-       salary
-from employees
-where salary >= (select salary
-                 from employees
-                 where first_name = 'Den')
-order by salary desc;
+--left join
 
---급여를 가장 적게 받는 사람의 이름, 급여, 사원번호는?
-select first_name,
-       salary,
-       employee_id
-from employees
---order by salary asc; --TJ 2100 50
-where salary = (select min(salary)
-                from employees);
+--equi join 테이터 106개 --> null은 포함되지 않는다
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e, departments d
+where e.department_id = d.department_id;
 
---가장 작은 급여를 구한다
-select min(salary)
-from employees;
+--left join 예제
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e left outer join departments d
+on e.department_id = d.department_id;
 
---평균 급여보다 적게 받는 사람의 이름, 급여를 출력하세요
---(1)평균 급여를 구한다
-select avg(salary)
-from employees;
+--left join 오라클 표현법
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e, departments d
+where e.department_id = d.department_id(+);
 
---(2)
-select first_name,
-       salary
-from employees
-where salary <= (select avg(salary)
-                 from employees)
-order by salary asc;
 
-----------------------------------------------------------------------------------
---subquery(다중행) 
+--right join 
 
---?? 부서번호가 110인 직원의 급여와 같은 모든 직원의 사번, 이름, 급여를 출력하세요
---110 12008
---110 8300
+--equi join 테이터 106개 --> null은 포함되지 않는다
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e, departments d
+where e.department_id = d.department_id;
 
-select salary
-from employees
-where department_id = 110;
+--right join 예제
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e right outer join departments d
+on e.department_id = d.department_id;
 
-select employee_id,
-       first_name,
-       salary
-from employees
---비교
-/*where salary = 12008
-or salary = 8300;*/
---사용
-where salary in (select salary
-                 from employees
-                 where department_id = 110);  --12008, 8300
+--right join 오라클 표현법
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e, departments d
+where e.department_id(+) = d.department_id;
+
+--right join --> left join
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e right outer join departments d
+on e.department_id = d.department_id;
+
+
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from departments d left outer join employees e
+on e.department_id = d.department_id;
+
+--full outer join
+select  e.first_name,
+        e.department_id,
+        d.department_name,
+        d.department_id
+from employees e full outer join departments d
+on e.department_id = d.department_id;
+
+
+--*Self Join
+select  e.employee_id,
+        e.first_name,
+        e.salary,
+        e.phone_number,
+        e.manager_id,
+        m.employee_id,
+        m.first_name ManagerName,
+        m.phone_number
+from employees e, employees m
+where e.manager_id = m.employee_id;
